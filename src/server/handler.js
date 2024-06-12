@@ -1,24 +1,31 @@
 const predictClassification = require('../services/inferenceService');
 const crypto = require('crypto');
-const storeData = require('../services/storeData');
-const { Firestore } = require('@google-cloud/firestore');
+const bcrypt = require('bcrypt');
+const { storePredictionData, storeUserData } = require('../services/storeData');
+const db = require('../services/storeData');
+const InputError = require('../exceptions/InputError');
 
 async function postPredict(request, h) {
-    const { image } = request.payload;
+    const { inputData } = request.payload;
     const { model } = request.server.app;
 
-    const { result, suggestion } = await predictClassification(model, image);
+    // Validate inputData
+    if (!Array.isArray(inputData) || inputData.length !== 70) {
+        throw new InputError('Invalid input data. Please provide an array of 70 numerical values.');
+    }
+
+    const { result, suggestion } = await predictClassification(model, inputData);
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
     const data = {
-        "id": id,
-        "result": result,
-        "suggestion": suggestion,
-        "createdAt": createdAt
-    }
+        id,
+        result,
+        suggestion,
+        createdAt
+    };
 
-    await storeData(id, data);
+    await storePredictionData(id, data);
 
     const response = h.response({
         status: 'success',
@@ -31,7 +38,6 @@ async function postPredict(request, h) {
 };
 
 async function getPredictHistories(request, h) {
-    const db = new Firestore();
     const predictCollection = db.collection('predictions');
     const predictSnapshot = await predictCollection.get();
 
@@ -53,5 +59,47 @@ async function getPredictHistories(request, h) {
     return response;
 }
 
+const registerHandler = async (request, h) => {
+    const { username, email, password } = request.payload;
 
-module.exports = { postPredict, getPredictHistories };
+    // Check if the email already exists
+    const userRef = db.collection('users').where('email', '==', email);
+    const snapshot = await userRef.get();
+
+    if (!snapshot.empty) {
+        return h.response({ status: 'fail', message: 'Email is already in use' }).code(409);
+    }
+
+    // Proceed with registration if the email does not exist
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userData={
+        username,
+        email,
+        password: hashedPassword,
+    };
+    const id = crypto.randomUUID();
+    await storeUserData(id, userData); // Store user data in the database
+
+    return h.response({ status: 'success', message: 'User registered successfully' }).code(201);
+};
+
+const loginHandler = async (request, h) => {
+    const { email, password } = request.payload;
+    const userRef = db.collection('users').where('email', '==', email);
+    const snapshot = await userRef.get();
+
+    if (snapshot.empty) {
+        return h.response({ status: 'fail', message: 'Invalid email or password' }).code(401);
+    }
+
+    const user = snapshot.docs[0].data();
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+        return h.response({ status: 'fail', message: 'Invalid email or password' }).code(401);
+    }
+
+    return h.response({ status: 'success', message: 'Login successful' }).code(200);
+};
+
+module.exports = { postPredict, getPredictHistories, registerHandler, loginHandler, storePredictionData, storeUserData };

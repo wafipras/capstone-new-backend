@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cp-healhub",
+  "private_key_id": "6d45a7bab7326dc87818b2553cc7505aa0f8901f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDkYU+Nvlw53l10\nbeleY27dZCdRqAtsTx03iXyZJ3M6c3SAMFhLUp7+h8XydF1cPqVrPvsaxEp5WdjU\ncbHR4pfuHVp8gWBDSUj12xvfWOqZgIOY392+lFtB50or5+0okxMBwThSIHTW9D9G\njWnW2zPAAG/Omy3qjLSIgVu1+qB/5i6Lie7RMjbvY3faVZwpYDBj0qbk0LgTrhg4\nfq4dlJBxrpE0Twf4DRZi0menXeR9iBdsqjeZrNzE8xZePJ5EI6NjjFAc4DCszo5i\nguzltY8aWGNCNAgLcjBVobmcl+fkv4ykRhW9b59HEF9A6uheUGL3tLmz0qx24Dh2\n6I6Yfy2XAgMBAAECggEAB2u4C4mHcqPskndt0VDWzd/OvUMCGANcFi1j/JABGQGe\nY/nuLIhjPS8JOg8Y54HrmxgBTcXaC6ZlOsX0+rZrrGOMyKXljFopwj9b4P6BJPq9\ni+6eRG6KppIO4W1YUeyxfema3GRMl515HuBCc6ZMwKzi9SoqrEflJ9hYNAoQRAeV\nfRM9ETEDV9+pgbHqexuM4z2azNO6B/06Rb03rPf+emRre6SSQ04igkIrPOkIEiiS\nOSEEtSKjCjIGqizXDN50kyt1tUchlJeMhFtDc4GZJnZrVG+d2mnGinvoDut1miwc\nuu270IspgSyWmgfzc9OPLycEHigVy7bIwJCtMf1f3QKBgQD2v/xMilTY+lEsNeM6\nPZ/ZovY5lzReA4eiCS5kasLPhQ4KN5uqCsYRVvxnYM22Rz0mlJbFDB+JYmUoVSqF\nwZJGq1lgXCB3bJ0CPWX0JXYbew952qjHsQTsZ3f+xGBVvYGKJSkx8GX1qLyujClP\n+3zz7HsjW/XVZIfj9w3KiXYsSwKBgQDs8QiJpBUkoL1BzUT61TUCU6VNkwhDQZaI\nGds1LeZv6ZLl1HtbiZIOjl6BvR+4f21WOOGEcleCDIgtH+lBW7zEVKfr4KAftUS1\nc1cPI4pT0VivW4depOKaCK1NG7dbnpdIKCQS1Qjve9BSM7KwwazIdYgtEsYvZPvj\nVYwNnGacZQKBgQDE9QoWrnR7nZMdjwYJfxcRSZrw7VjHklm5ZUq6rN1DeBl03l5K\npL7lKGHgwsxxKvwMx55xOvQRXZERWKnQimqQLkXxPJhNu0y4dPnkn+JenSQFSBxh\nCVO8v/pwSZ/70ICOHIt9aT55kG7LhOWVClD7A1BnMQhRhSVTOeiwOnkxcQKBgQCf\n1v5udA17VyA1ard1Cy2mcy0Zhu3VCUL2b5Lsbhl9N7HMb6oEF2s7fJmOpjnm6bel\nqdug0M3twmx/HH7rg2p1e7KIMlFy8oL2cWeyo8QmRRyxt2o707m2NdJLKT5phTQD\nDmk/dw1/GSRwv8V07kKUPI1v8rFVuacfNk+zwuWJ7QKBgQCEXIfhfa9F+xf2TVAH\ndLA36rs0I2AX5iNnc99ou2kpsvcuhNN04NsVFlA6xY+dTgO3wRb0kUQ28U2GNyaP\nApgMlVYfqsCGTYBe98XvLtmvW3bhYM/PFD0wgquzZTwpRq2f2OzeHuIuIvtB3zxt\nDvWZj0viwNjwQv9g9jT/zqRSog==\n-----END PRIVATE KEY-----\n",
+  "client_email": "cp-healhub@appspot.gserviceaccount.com",
+  "client_id": "110621724043869966811",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cp-healhub%40appspot.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
