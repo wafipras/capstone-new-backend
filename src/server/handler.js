@@ -4,24 +4,33 @@ const bcrypt = require('bcrypt');
 const { storePredictionData, storeUserData } = require('../services/storeData');
 const db = require('../services/storeData');
 const InputError = require('../exceptions/InputError');
+const { Firestore } = require('@google-cloud/firestore');
+
 
 async function postPredict(request, h) {
     const { inputData } = request.payload;
     const { model } = request.server.app;
+
+    // Initialize Firestore
+    const db = new Firestore({
+        databaseId: 'healhub',
+        projectId: process.env.GCLOUD_PROJECT,
+        keyFilename: process.env.GCLOUD_KEY_FILE,
+    });
 
     // Validate inputData
     if (!Array.isArray(inputData) || inputData.length !== 70) {
         throw new InputError('Invalid input data. Please provide an array of 70 numerical values.');
     }
 
-    const { result, suggestion } = await predictClassification(model, inputData);
+    const { classResult, label } = await predictClassification(model, inputData);
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
     const data = {
         id,
-        result,
-        suggestion,
+        classResult,
+        label,
         createdAt
     };
 
@@ -38,6 +47,13 @@ async function postPredict(request, h) {
 };
 
 async function getPredictHistories(request, h) {
+    // Initialize Firestore
+    const db = new Firestore({
+        databaseId: 'healhub',
+        projectId: process.env.GCLOUD_PROJECT,
+        keyFilename: process.env.GCLOUD_KEY_FILE,
+    });
+
     const predictCollection = db.collection('predictions');
     const predictSnapshot = await predictCollection.get();
 
@@ -59,9 +75,14 @@ async function getPredictHistories(request, h) {
     return response;
 }
 
+
 const registerHandler = async (request, h) => {
     const { username, email, password } = request.payload;
-
+    const db = new Firestore({
+        databaseId: 'healhub',
+        projectId: process.env.GCLOUD_PROJECT,
+        keyFilename: process.env.GCLOUD_KEY_FILE,
+    });
     // Check if the email already exists
     const userRef = db.collection('users').where('email', '==', email);
     const snapshot = await userRef.get();
@@ -85,6 +106,11 @@ const registerHandler = async (request, h) => {
 
 const loginHandler = async (request, h) => {
     const { email, password } = request.payload;
+    const db = new Firestore({
+        databaseId: 'healhub',
+        projectId: process.env.GCLOUD_PROJECT,
+        keyFilename: process.env.GCLOUD_KEY_FILE,
+    });
     const userRef = db.collection('users').where('email', '==', email);
     const snapshot = await userRef.get();
 

@@ -5,13 +5,35 @@ async function predictClassification(model, inputData) {
     const inputTensor = tf.tensor2d([inputData]);
 
     // Perform prediction
+    const class_name = [
+        'AIDS',
+        'Alergi',
+        'Asam Lambung',
+        'Asma',
+        'Cacar Air',
+        'Demam Berdarah',
+        'Hepatitis A',
+        'Hepatitis B',
+        'Hepatitis C',
+        'Hipertensi',
+        'Infeksi Jamur',
+        'Infeksi Saluran Kemih',
+        'Malaria',
+        'Muntaber',
+        'Paru-Paru Basah',
+        'Reaksi Obat',
+        'Tipes',
+        'Vertigo',
+        'diabetes',
+        'tuberkulosis'
+    ];
     const prediction = model.predict(inputTensor);
 
     // Process prediction result
-    const result = prediction.dataSync();
-    const suggestion = "Example suggestion based on result"; // Modify as needed
+    const classResult = tf.argMax(prediction, 1).dataSync()[0];
+    const label = class_names[classResult]
 
-    return { result, suggestion };
+    return { classResult, label };
 }
 
 module.exports = predictClassification;

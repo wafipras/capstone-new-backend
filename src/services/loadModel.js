@@ -1,28 +1,16 @@
 const tf = require('@tensorflow/tfjs-node');
-const dotenv = require('dotenv');
+require('dotenv').config(); // Load environment variables from .env file
 
-// Load environment variables from .env file
-dotenv.config();
-
-console.log('Environment Variables:', process.env); // Debugging: Print all environment variables
-
-async function loadModel() {
-    const modelUrl = process.env.MODEL_URL;
-    console.log('Model URL:', modelUrl); // Debugging: Print the model URL
-    if (!modelUrl) {
-        throw new Error('MODEL_URL is not set');
-    }
-    return tf.loadLayersModel(modelUrl);
-}
-
-loadModel()
-    .then(model => {
+const loadModel = async () => {
+    try {
+        console.log('Loading model from URL:', process.env.MODEL_URL);
+        const model = await tf.loadLayersModel(process.env.MODEL_URL);
         console.log('Model loaded successfully');
-    })
-    .catch(err => {
-        console.error('Error loading model:', err);
-        console.error('Error stack:', err.stack);
-    });
-
+        return model;
+    } catch (error) {
+        console.error('Error loading model:', error);
+        throw new Error('Failed to load model');
+    }
+};
 
 module.exports = loadModel;
