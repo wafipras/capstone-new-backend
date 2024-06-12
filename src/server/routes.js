@@ -3,16 +3,9 @@ const { postPredict, getPredictHistories, registerHandler, loginHandler } = requ
 
 const routes = [
   {
-    path: '/predict',
     method: 'POST',
-    handler: postPredict,
-    options: {
-      payload: {
-        allow: 'application/json',
-        parse: true,
-        maxBytes: 1000000
-      }
-    }
+    path: '/predictions',
+    handler: postPredict
   },
   {
     method: 'POST',

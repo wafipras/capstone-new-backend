@@ -2,14 +2,13 @@ const predictClassification = require('../services/inferenceService');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { storePredictionData, storeUserData } = require('../services/storeData');
-const db = require('../services/storeData');
 const InputError = require('../exceptions/InputError');
 const { Firestore } = require('@google-cloud/firestore');
-
+require('dotenv').config(); // Load environment variables from .env file
 
 async function postPredict(request, h) {
     const { inputData } = request.payload;
-    const { model } = request.server.app;
+    const model = request.server.app.model; // Get the model from the server's context
 
     // Initialize Firestore
     const db = new Firestore({
@@ -23,6 +22,7 @@ async function postPredict(request, h) {
         throw new InputError('Invalid input data. Please provide an array of 70 numerical values.');
     }
 
+    // Perform prediction using the loaded model
     const { classResult, label } = await predictClassification(model, inputData);
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
@@ -44,7 +44,7 @@ async function postPredict(request, h) {
 
     response.code(201);
     return response;
-};
+}
 
 async function getPredictHistories(request, h) {
     // Initialize Firestore
@@ -75,7 +75,6 @@ async function getPredictHistories(request, h) {
     return response;
 }
 
-
 const registerHandler = async (request, h) => {
     const { username, email, password } = request.payload;
     const db = new Firestore({
@@ -93,7 +92,7 @@ const registerHandler = async (request, h) => {
 
     // Proceed with registration if the email does not exist
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userData={
+    const userData = {
         username,
         email,
         password: hashedPassword,
@@ -128,4 +127,4 @@ const loginHandler = async (request, h) => {
     return h.response({ status: 'success', message: 'Login successful' }).code(200);
 };
 
-module.exports = { postPredict, getPredictHistories, registerHandler, loginHandler, storePredictionData, storeUserData };
+module.exports = { postPredict, getPredictHistories, registerHandler, loginHandler, storePredictionData, storeUserData };

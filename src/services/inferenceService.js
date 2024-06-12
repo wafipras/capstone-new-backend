@@ -10,6 +10,7 @@ async function predictClassification(model, inputData) {
         'Alergi',
         'Asam Lambung',
         'Asma',
+        'Diabetes',
         'Cacar Air',
         'Demam Berdarah',
         'Hepatitis A',
@@ -23,15 +24,14 @@ async function predictClassification(model, inputData) {
         'Paru-Paru Basah',
         'Reaksi Obat',
         'Tipes',
-        'Vertigo',
-        'diabetes',
-        'tuberkulosis'
+        'Tuberkulosis',
+        'Vertigo'
     ];
     const prediction = model.predict(inputTensor);
 
     // Process prediction result
     const classResult = tf.argMax(prediction, 1).dataSync()[0];
-    const label = class_names[classResult]
+    const label = class_name[classResult]
 
     return { classResult, label };
 }
